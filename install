@@ -88,7 +88,7 @@ python-dev \
 build-essential \
 python-gudev
 
-sudo easy_install pip
+sudo apt-get install python-pip
 sudo python2.7 -m pip install -U platformio
 sudo rm -rf $HOME/.platformio/
 
@@ -193,7 +193,9 @@ else
     fi
 fi
 
-cd $HOME/linorobot_ws/src
+cd $HOME/linorobot_ws/
+catkin_make
+
 git clone -b imu20948-spark-test https://github.com/gssabu/gvac.git
 git clone https://github.com/linorobot/imu_calib.git
 git clone https://github.com/linorobot/lino_pid.git
@@ -214,7 +216,7 @@ echo "export LINOBASE=$BASE" >> $HOME/.bashrc
 source $HOME/.bashrc
 
 cd $HOME/linorobot_ws
-catkin_make --pkg lino_msgs
+#catkin_make --pkg lino_msgs
 catkin_make
 
 echo
