@@ -99,6 +99,21 @@ mkdir -p linorobot_ws/src
 cd $HOME/linorobot_ws/src
 catkin_init_workspace
 
+if [ $ROSDISTRO == "melodic" ]
+    then
+        git clone https://github.com/ros-perception/openslam_gmapping.git
+        
+else
+    sudo apt-get install -y \
+    python-gudev \
+    ros-$ROSDISTRO-gmapping \
+    ros-$ROSDISTRO-map-server
+fi
+
+cd $HOME/linorobot_ws/
+catkin_make
+source devel/setup.bash
+
 sudo apt-get install -y \
 ros-$ROSDISTRO-roslint \
 ros-$ROSDISTRO-rosserial \
