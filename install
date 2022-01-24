@@ -110,6 +110,26 @@ else
     ros-$ROSDISTRO-map-server
 fi
 
+echo $ARCH
+if [ $ARCH == "x86_64" ]
+    then
+        sudo apt-get install -y python-gobject
+        wget https://launchpad.net/ubuntu/+archive/primary/+files/python-gudev_147.2-3_amd64.deb
+        sudo dpkg -i python-gudev_147.2-3_amd64.deb
+        sudo apt install -f
+elif [ $ARCH == "arm64" ] || [ $ARCH == "aarch64" ]
+    then
+        sudo apt-get install -y python-gobject
+        wget https://launchpad.net/ubuntu/+archive/primary/+files/python-gudev_147.2-3_arm64.deb
+        sudo dpkg -i python-gudev_147.2-3_arm64.deb
+        sudo apt install -f
+else 
+        sudo apt-get install -y python-gobject
+        wget https://launchpad.net/ubuntu/+archive/primary/+files/python-gudev_147.2-3_armhf.deb
+        sudo dpkg -i python-gudev_147.2-3_armhf.deb
+        sudo apt install -f
+fi
+
 cd $HOME/linorobot_ws/
 catkin_make
 source devel/setup.bash
