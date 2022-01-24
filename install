@@ -88,7 +88,6 @@ python-dev \
 build-essential \
 python-gudev
 
-sudo apt-get install python-pip
 sudo python2.7 -m pip install -U platformio
 sudo rm -rf $HOME/.platformio/
 
