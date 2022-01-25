@@ -178,9 +178,7 @@ else
     fi
 fi
 
-cd $HOME/linorobot_ws/
-catkin_make
-
+cd $HOME/linorobot_ws/src
 git clone -b imu20948-spark-test https://github.com/gssabu/gvac.git
 git clone https://github.com/linorobot/imu_calib.git
 git clone https://github.com/linorobot/lino_pid.git
