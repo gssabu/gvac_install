@@ -86,9 +86,10 @@ openssh-server \
 python-setuptools \
 python-dev \
 build-essential \
-python-gudev
-
-sudo python2.7 -m pip install -U platformio
+gir1.2-gudev-1.0
+sudo apt install python-is-python3
+sudo apt install python-is-python3
+sudo pip3 install -U platformio
 sudo rm -rf $HOME/.platformio/
 
 source /opt/ros/$ROSDISTRO/setup.bash
@@ -97,41 +98,6 @@ cd $HOME
 mkdir -p linorobot_ws/src
 cd $HOME/linorobot_ws/src
 catkin_init_workspace
-
-if [ $ROSDISTRO == "melodic" ]
-    then
-        git clone https://github.com/ros-perception/openslam_gmapping.git
-        
-else
-    sudo apt-get install -y \
-    python-gudev \
-    ros-$ROSDISTRO-gmapping \
-    ros-$ROSDISTRO-map-server
-fi
-
-echo $ARCH
-if [ $ARCH == "x86_64" ]
-    then
-        sudo apt-get install -y python-gobject
-        wget https://launchpad.net/ubuntu/+archive/primary/+files/python-gudev_147.2-3_amd64.deb
-        sudo dpkg -i python-gudev_147.2-3_amd64.deb
-        sudo apt install -f
-elif [ $ARCH == "arm64" ] || [ $ARCH == "aarch64" ]
-    then
-        sudo apt-get install -y python-gobject
-        wget https://launchpad.net/ubuntu/+archive/primary/+files/python-gudev_147.2-3_arm64.deb
-        sudo dpkg -i python-gudev_147.2-3_arm64.deb
-        sudo apt install -f
-else 
-        sudo apt-get install -y python-gobject
-        wget https://launchpad.net/ubuntu/+archive/primary/+files/python-gudev_147.2-3_armhf.deb
-        sudo dpkg -i python-gudev_147.2-3_armhf.deb
-        sudo apt install -f
-fi
-
-cd $HOME/linorobot_ws/
-catkin_make
-source devel/setup.bash
 
 sudo apt-get install -y \
 ros-$ROSDISTRO-roslint \
@@ -225,7 +191,7 @@ cd $HOME/linorobot_ws/src/gvac
 TRAVIS_BRANCH="echo $TRAVIS_BRANCH"
 if [ "$TRAVIS_BRANCH" = "devel" ]; then git checkout devel; fi
 
-cd $HOME/linorobot_ws/src/linorobot/teensy/firmware
+cd $HOME/linorobot_ws/src/gvac/teensy/firmware
 export PLATFORMIO_CI_SRC=$PWD/src/firmware.ino
 platformio ci --project-conf=./platformio.ini --lib="./lib/ros_lib" --lib="./lib/config"  --lib="./lib/motor"  --lib="./lib/kinematics"  --lib="./lib/pid"  --lib="./lib/imu" --lib="./lib/encoder"
 
@@ -235,7 +201,7 @@ echo "export LINOBASE=$BASE" >> $HOME/.bashrc
 source $HOME/.bashrc
 
 cd $HOME/linorobot_ws
-#catkin_make --pkg lino_msgs
+catkin_make --pkg lino_msgs
 catkin_make
 
 echo
