@@ -12,13 +12,7 @@ SENSOR=$2
 ARCH="$(uname -m)"
 echo $ARCH
 echo "
-______ _____________   _________ ________ _______ ________ _______ ________
-___  / ____  _/___  | / /__  __ \___  __ \__  __ \___  __ )__  __ \___  __/
-__  /   __  /  __   |/ / _  / / /__  /_/ /_  / / /__  __  |_  / / /__  /   
-_  /_____/ /   _  /|  /  / /_/ / _  _, _/ / /_/ / _  /_/ / / /_/ / _  /    
-/_____//___/   /_/ |_/   \____/  /_/ |_|  \____/  /_____/  \____/  /_/     
-                    
-                            http://linorobot.org                                                                          
+                                                                       
 "
 if [ "$3" != "test" ]
     then
@@ -66,7 +60,7 @@ if [ "$3" != "test" ]
         fi
 
         echo
-        echo -n "You are installing ROS-$ROSDISTRO Linorobot for $BASE base with a $SENSOR sensor. Enter [y] to continue. " 
+        echo -n "You are installing ROS-$ROSDISTRO Gvac for $BASE base with a $SENSOR sensor. Enter [y] to continue. " 
         read reply
         if [[ "$reply" != "y" && "$reply" != "Y" ]]
             then
@@ -95,8 +89,8 @@ sudo rm -rf $HOME/.platformio/
 source /opt/ros/$ROSDISTRO/setup.bash
 
 cd $HOME
-mkdir -p linorobot_ws/src
-cd $HOME/linorobot_ws/src
+mkdir -p gvac_ws/src
+cd $HOME/gvac_ws/src
 catkin_init_workspace
 
 sudo apt-get install -y \
@@ -122,7 +116,7 @@ if [[ "$3" == "test" ]]
         ros-$ROSDISTRO-depthimage-to-laserscan \
         ros-$ROSDISTRO-teb-local-planner 
 
-        cd $HOME/linorobot_ws/src
+        cd $HOME/gvac_ws/src
         git clone https://github.com/EAIBOT/ydlidar.git
 
 else
@@ -163,12 +157,12 @@ else
 
     elif [[ "$SENSOR" == "ydlidar" ]]
         then
-            cd $HOME/linorobot_ws/src
+            cd $HOME/gvac_ws/src
             git clone https://github.com/EAIBOT/ydlidar.git
    
     elif [[ "$SENSOR" == "x2" ]]
         then
-            cd $HOME/linorobot_ws/src
+            cd $HOME/gvac_ws/src
             git clone https://github.com/YDLIDAR/ydlidar_ros_driver.git
     fi
 
@@ -178,27 +172,27 @@ else
     fi
 fi
 
-cd $HOME/linorobot_ws/src
-git clone -b imu20948-spark-test https://github.com/gssabu/gvac.git
+cd $HOME/gvac_ws/src
+git clone https://github.com/gssabu/gvac.git
 git clone https://github.com/linorobot/imu_calib.git
 git clone https://github.com/linorobot/lino_pid.git
 git clone https://github.com/linorobot/lino_udev.git
 git clone https://github.com/linorobot/lino_msgs.git
 
-cd $HOME/linorobot_ws/src/gvac
+cd $HOME/gvac_ws/src/gvac
 TRAVIS_BRANCH="echo $TRAVIS_BRANCH"
 if [ "$TRAVIS_BRANCH" = "devel" ]; then git checkout devel; fi
 
-cd $HOME/linorobot_ws/src/gvac/teensy/firmware
+cd $HOME/gvac_ws/src/gvac/teensy/firmware
 export PLATFORMIO_CI_SRC=$PWD/src/firmware.ino
 platformio ci --project-conf=./platformio.ini --lib="./lib/ros_lib" --lib="./lib/config"  --lib="./lib/motor"  --lib="./lib/kinematics"  --lib="./lib/pid"  --lib="./lib/imu" --lib="./lib/encoder"
 
-echo "source $HOME/linorobot_ws/devel/setup.bash" >> $HOME/.bashrc
-echo "export LINOLIDAR=$SENSOR" >> $HOME/.bashrc
-echo "export LINOBASE=$BASE" >> $HOME/.bashrc
+echo "source $HOME/gvact_ws/devel/setup.bash" >> $HOME/.bashrc
+echo "export gvac=$SENSOR" >> $HOME/.bashrc
+echo "export gvac=$BASE" >> $HOME/.bashrc
 source $HOME/.bashrc
 
-cd $HOME/linorobot_ws
+cd $HOME/gvac_ws
 catkin_make --pkg lino_msgs
 catkin_make
 
