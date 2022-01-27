@@ -27,10 +27,10 @@ install:
 
 script: 
   - cd
-  - git clone https://github.com/linorobot/lino_install
-  - cd lino_install
+  - git clone https://github.com/gvacrobot/gvac_install
+  - cd gvac_install
   - ./install 2wd xv11 test
 
 notifications:
   email:
-    - jimenojmm@gmail.com
+    - godsownglists3@gmail.com
