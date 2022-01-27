@@ -188,8 +188,8 @@ export PLATFORMIO_CI_SRC=$PWD/src/firmware.ino
 platformio ci --project-conf=./platformio.ini --lib="./lib/ros_lib" --lib="./lib/config"  --lib="./lib/motor"  --lib="./lib/kinematics"  --lib="./lib/pid"  --lib="./lib/imu" --lib="./lib/encoder"
 
 echo "source $HOME/gvact_ws/devel/setup.bash" >> $HOME/.bashrc
-echo "export gvac=$SENSOR" >> $HOME/.bashrc
-echo "export gvac=$BASE" >> $HOME/.bashrc
+echo "export GVACLIDAR=$SENSOR" >> $HOME/.bashrc
+echo "export GVACBASE=$BASE" >> $HOME/.bashrc
 source $HOME/.bashrc
 
 cd $HOME/gvac_ws
