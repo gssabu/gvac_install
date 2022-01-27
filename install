@@ -193,7 +193,7 @@ echo "export gvac=$BASE" >> $HOME/.bashrc
 source $HOME/.bashrc
 
 cd $HOME/gvac_ws
-catkin_make --pkg lino_msgs
+catkin_make --pkg gvac_msgs
 catkin_make
 
 echo
