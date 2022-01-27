@@ -26,7 +26,7 @@ if [ "$3" != "test" ]
                 
         elif [[ "$1" != "2wd" && "$1" != "4wd" && "$1" != "mecanum" && "$1" != "ackermann" ]]
             then
-                echo "Invalid linorobot base: $1"
+                echo "Invalid gvac base: $1"
                 echo
                 echo "Valid Options:"
                 echo "2wd"
@@ -38,7 +38,7 @@ if [ "$3" != "test" ]
 
         elif [[ "$2" != "xv11" && "$2" != "rplidar" && "$2" != "ydlidar" && "$2" != "hokuyo" && "$2" != "kinect" && "$2" != "x2" && "$2" != "realsense"  ]]
             then
-                echo "Invalid linorobot sensor: $2"
+                echo "Invalid gvac sensor: $2"
                 echo
                 echo "Valid Options:"
                 echo "hokuyo"
@@ -174,10 +174,10 @@ fi
 
 cd $HOME/gvac_ws/src
 git clone https://github.com/gssabu/gvac.git
-git clone https://github.com/linorobot/imu_calib.git
-git clone https://github.com/linorobot/lino_pid.git
-git clone https://github.com/linorobot/lino_udev.git
-git clone https://github.com/linorobot/lino_msgs.git
+git clone https://github.com/gssabu/imu_calib.git
+git clone https://github.com/gssabu/gvac_pid.git
+git clone https://github.com/gssabu/gvac_udev.git
+git clone https://github.com/gssabu/gvac_msgs.git
 
 cd $HOME/gvac_ws/src/gvac
 TRAVIS_BRANCH="echo $TRAVIS_BRANCH"
