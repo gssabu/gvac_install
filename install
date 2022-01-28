@@ -89,7 +89,7 @@ cd $HOME
 mkdir -p gvacrobot_ws/src
 cd $HOME/gvacrobot_ws/src
 catkin_init_workspace
-git clone https://github.com/gvacrobot/gvac_msgs.git
+git clone https://github.com/gssabu/gvac_msgs.git
 
 cd $HOME/gvacrobot_ws/
 catkin_make
