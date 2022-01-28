@@ -163,7 +163,7 @@ else
     elif [[ "$SENSOR" == "x2" ]]
         then
             cd $HOME/gvac_ws/src
-            git clone https://github.com/YDLIDAR/ydlidar_ros_driver.git
+            #git clone https://github.com/YDLIDAR/ydlidar_ros_driver.git
     fi
 
     if [[ "$BASE" == "ackermann" ]]
