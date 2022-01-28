@@ -27,7 +27,7 @@ install:
 
 script: 
   - cd
-  - git clone https://github.com/gvacrobot/gvac_install
+  - git clone https://github.com/gssabu/gvac_install
   - cd gvac_install
   - ./install 2wd xv11 test
 
