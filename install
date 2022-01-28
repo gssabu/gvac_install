@@ -11,62 +11,59 @@ BASE=$1
 SENSOR=$2
 ARCH="$(uname -m)"
 echo $ARCH
-echo "
-                                                                       
-"
+
 if [ "$3" != "test" ]
-    then
-        if [ "$*" == "" ]
-            then
-                echo "No arguments provided"
-                echo
-                echo "Example: $ ./install.sh 2wd xv11"
-                echo
-                exit 1
+then
+if [ "$*" == "" ]
+then
+echo "No arguments provided"
+echo
+echo "Example: $ ./install.sh 2wd xv11"
+echo
+exit 1
                 
-        elif [[ "$1" != "2wd" && "$1" != "4wd" && "$1" != "mecanum" && "$1" != "ackermann" ]]
-            then
-                echo "Invalid gvac base: $1"
-                echo
-                echo "Valid Options:"
-                echo "2wd"
-                echo "4wd"
-                echo "ackermann"
-                echo "mecanum"
-                echo
-                exit 1
+    elif [[ "$1" != "2wd" && "$1" != "4wd" && "$1" != "mecanum" && "$1" != "ackermann" ]]
+        then
+            echo "Invalid linorobot base: $1"
+            echo
+            echo "Valid Options:"
+            echo "2wd"
+            echo "4wd"
+            echo "ackermann"
+            echo "mecanum"
+            echo
+            exit 1
 
-        elif [[ "$2" != "xv11" && "$2" != "rplidar" && "$2" != "ydlidar" && "$2" != "hokuyo" && "$2" != "kinect" && "$2" != "x2" && "$2" != "realsense"  ]]
-            then
-                echo "Invalid gvac sensor: $2"
-                echo
-                echo "Valid Options:"
-                echo "hokuyo"
-                echo "kinect"
-                echo "lms1xx"
-                echo "realsense"
-                echo "rplidar"
-                echo "xv11"
-                echo "ydlidar"
-                echo "x2"
-                echo
-                exit 1
-        
-        elif [[ "$ARCH" != "x86_64" && "$2" == "realsense" ]]
-            then
-                echo "Intel Realsense R200 is not supported in $ARCH architecture."
-                exit 1
+    elif [[ "$2" != "xv11" && "$2" != "rplidar" && "$2" != "ydlidar" && "$2" != "hokuyo" && "$2" != "kinect" && "$2" != "realsense" ]]
+        then
+            echo "Invalid linorobot sensor: $2"
+            echo
+            echo "Valid Options:"
+            echo "hokuyo"
+            echo "kinect"
+            echo "lms1xx"
+            echo "realsense"
+            echo "rplidar"
+            echo "xv11"
+            echo "ydlidar"
+            echo
+            exit 1
+    
+    elif [[ "$ARCH" != "x86_64" && "$2" == "realsense" ]]
+        then
+            echo "Intel Realsense R200 is not supported in $ARCH architecture."
+            exit 1
 
-        fi
+    fi
 
-        echo
-        echo -n "You are installing ROS-$ROSDISTRO Gvac for $BASE base with a $SENSOR sensor. Enter [y] to continue. " 
-        read reply
-        if [[ "$reply" != "y" && "$reply" != "Y" ]]
-            then
-                echo "Wrong input. Exiting now"
-                exit 1
-        fi
+    echo
+    echo -n "You are installing ROS-$ROSDISTRO Linorobot for $BASE base with a $SENSOR sensor. Enter [y] to continue. " 
+    read reply
+    if [[ "$reply" != "y" && "$reply" != "Y" ]]
+        then
+            echo "Wrong input. Exiting now"
+            exit 1
+    fi
 fi
 
 echo
@@ -82,16 +79,21 @@ python-dev \
 build-essential \
 gir1.2-gudev-1.0
 sudo apt install python-is-python3
-sudo apt install python-is-python3
+sudo apt install python3-pip
 sudo pip3 install -U platformio
 sudo rm -rf $HOME/.platformio/
 
 source /opt/ros/$ROSDISTRO/setup.bash
 
 cd $HOME
-mkdir -p gvac_ws/src
-cd $HOME/gvac_ws/src
+mkdir -p gvacrobot_ws/src
+cd $HOME/gvacrobot_ws/src
 catkin_init_workspace
+git clone https://github.com/gvacrobot/gvac_msgs.git
+
+cd $HOME/gvacrobot_ws/
+catkin_make
+source devel/setup.bash
 
 sudo apt-get install -y \
 ros-$ROSDISTRO-roslint \
@@ -116,7 +118,7 @@ if [[ "$3" == "test" ]]
         ros-$ROSDISTRO-depthimage-to-laserscan \
         ros-$ROSDISTRO-teb-local-planner 
 
-        cd $HOME/gvac_ws/src
+        cd $HOME/gvacrobot_ws/src
         git clone https://github.com/EAIBOT/ydlidar.git
 
 else
@@ -157,13 +159,8 @@ else
 
     elif [[ "$SENSOR" == "ydlidar" ]]
         then
-            cd $HOME/gvac_ws/src
+            cd $HOME/gvacrobot_ws/src
             git clone https://github.com/EAIBOT/ydlidar.git
-   
-    elif [[ "$SENSOR" == "x2" ]]
-        then
-            cd $HOME/gvac_ws/src
-            #git clone https://github.com/YDLIDAR/ydlidar_ros_driver.git
     fi
 
     if [[ "$BASE" == "ackermann" ]]
@@ -172,27 +169,26 @@ else
     fi
 fi
 
-cd $HOME/gvac_ws/src
-git clone https://github.com/gssabu/gvac.git
+cd $HOME/gvacrobot_ws/src
+git clone https://github.com/gssabu/gvacrobot
 git clone https://github.com/gssabu/imu_calib.git
 git clone https://github.com/gssabu/gvac_pid.git
 git clone https://github.com/gssabu/gvac_udev.git
-git clone https://github.com/gssabu/gvac_msgs.git
 
-cd $HOME/gvac_ws/src/gvac
+cd $HOME/gvacrobot_ws/src/gvacrobot
 TRAVIS_BRANCH="echo $TRAVIS_BRANCH"
 if [ "$TRAVIS_BRANCH" = "devel" ]; then git checkout devel; fi
 
-cd $HOME/gvac_ws/src/gvac/teensy/firmware
+cd $HOME/gvacrobot_ws/src/gvacrobot/teensy/firmware
 export PLATFORMIO_CI_SRC=$PWD/src/firmware.ino
 platformio ci --project-conf=./platformio.ini --lib="./lib/ros_lib" --lib="./lib/config"  --lib="./lib/motor"  --lib="./lib/kinematics"  --lib="./lib/pid"  --lib="./lib/imu" --lib="./lib/encoder"
 
-echo "source $HOME/gvac_ws/devel/setup.bash" >> $HOME/.bashrc
-echo "export GVACLIDAR=$SENSOR" >> $HOME/.bashrc
+echo "source $HOME/gvacrobot_ws/devel/setup.bash" >> $HOME/.bashrc
+echo "export HVACLIDAR=$SENSOR" >> $HOME/.bashrc
 echo "export GVACBASE=$BASE" >> $HOME/.bashrc
 source $HOME/.bashrc
 
-cd $HOME/gvac_ws
+cd $HOME/gvacrobot_ws
 catkin_make --pkg gvac_msgs
 catkin_make
 
